@@ -26,6 +26,7 @@ app.set("view engine", "handlebars");
 
 // Import routes and give the server access to them.
 var routes = require("./controller/voteController.js");
+app.use("/", routes);
 
 // Syncing our sequelize models and then starting our Express app
 // =============================================================
