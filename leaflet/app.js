@@ -7,7 +7,7 @@ var config = {
 var geocodio = new Geocodio(config);
 
 
-var address = 'San Francisco, CA 94111'; //this would need to change into user input.
+var address = 'fairfax, va'; //this would need to change into user input.
 
 //this function will get the city, state and return a longitude/lat of the location.
 geocodio.get('geocode', {q: address}, function(err, response){

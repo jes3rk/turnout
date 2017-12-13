@@ -7,6 +7,7 @@
     <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
     crossorigin=""></script> <!--leaflet js (needs to be after leaflet css) -->
     <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <!-- <script src='app.js'></script> -->
     <!-- mapbox below -->
     <script src='https://api.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.js'></script>
@@ -18,19 +19,7 @@
 
   <div id="mapId"></div>
 
-  <input type="text" id='mapSearch' placeholder='search map here' method='POST'>
-  <button>submit</button>
-
-  <script>
-  var mapboxAccessToken = 'pk.eyJ1IjoieWplb25nMTkiLCJhIjoiY2piNTdteWdwMzdpNTMzbzloNW41amY1dSJ9.bZJN4ceMtDY7GA6d-h23ow';
-  var map = L.map('mapId').setView([37.8, -96], 4);
-
-  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + mapboxAccessToken, {
-      id: 'mapbox.light',
-      // attribution:
-  }).addTo(map);
-
-  L.geoJson(statesData).addTo(map);
+  <script src='./logic.js'>
 
   </script>
 
