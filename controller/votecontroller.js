@@ -20,8 +20,9 @@ router.get("/:state/:code", function(req, res) {
       fips_code: req.params.code
     }
   }).then(function(data) {
+    console.log(data);
     var hbsObject = {
-      
+
     }
     res.render("results", hbsObject)
   })
