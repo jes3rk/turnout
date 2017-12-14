@@ -67,17 +67,18 @@ module.exports = function(sequelize, DataTypes) {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      allowNull: false,
+      // allowNull: false,
       primaryKey: true
     },
     lat: {
-      type: DataTypes.FLOAT
+      type: DataTypes.TEXT
     },
     long: {
-      type: DataTypes.FLOAT
+      type: DataTypes.TEXT
     },
     fips_code: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, { timestamps: false });
 
