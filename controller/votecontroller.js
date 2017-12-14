@@ -1,12 +1,15 @@
 var express = require("express");
 var db = require("../models");
+
 var passport = require("../config/passport");
 var path = require("path");
+
+
 
 var router = express.Router();
 
 // Import the model (cat.js) to use its database functions.
-var Washington = require("../models/turnout.js");
+// var Washington = require("../models/turnout.js");
 
 // home page router
 router.get("/", function(req, res) {
@@ -15,28 +18,27 @@ router.get("/", function(req, res) {
   res.render("index");
 });
 
-<<<<<<< HEAD
+
 router.get("/login", function(req, res) {
     res.sendFile(path.join(__dirname, "../public/login.html"));
   });
 
-=======
 // results page Router
-router.get("/:state/:code", function(req, res) {
+router.get("/Washington/:code", function(req, res) {
+  // console.log(db);
   var state = req.params.state;
-  db.state.findOne({
+  db.Washington_state_data.findOne({
     where: {
       fips_code: req.params.code
     }
   }).then(function(data) {
-    console.log(data);
-    var hbsObject = {
-
-    }
+    // console.log(data);
+    var hbsObject = data.dataValues;
+    console.log(hbsObject);
     res.render("results", hbsObject)
   })
 })
->>>>>>> 73e8d87f3ad58b0923b1052260ed3f820582e79a
+
 module.exports = router;
 
 
