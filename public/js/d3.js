@@ -34,9 +34,6 @@ function pieGenerator(data) {
     .append("g")
       .attr("transform", "translate(" + width / 2 + "," + (height / 2) + ")");
 
-
-
-
   var root = d3.hierarchy(data);
   root.sum(function(d) { return d.size; });
 
@@ -44,8 +41,6 @@ function pieGenerator(data) {
       .data(partition(root).descendants())
     .enter().append("path")
       .attr("d", arc)
-      // .attr("id")
-      // .style("fill", function(d) { return color((d.children ? d : d.parent).data.name); })
       .style("fill", function(d) {
         switch (d.data.name) {
           case "Registered Voters":
@@ -88,5 +83,4 @@ function pieGenerator(data) {
   };
 
   d3.select(self.frameElement).style("height", height + "px");
-
 }

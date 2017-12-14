@@ -3,6 +3,10 @@ var db = require("../models");
 
 var router = express.Router();
 
+function pct(num) {
+  return (num * 100).toFixed(2) + "%";
+};
+
 // Import the model (cat.js) to use its database functions.
 // var Washington = require("../models/turnout.js");
 
@@ -24,6 +28,18 @@ router.get("/Washington/:code", function(req, res) {
   }).then(function(data) {
     // console.log(data);
     var hbsObject = data.dataValues;
+    var da = data.dataValues;
+    hbsObject.legend_first = [
+      // { name: "Eligible Voters", count: da.total_elig_pop, pct: pct(1), color: "white" },
+      { name: "Registered Voters", count: da.total_regis_pop, pct: pct(da.total_reg_pop_pct), color: "#e74b3b" },
+      { name: "Unregistered Voters", count: da.total_elig_pop - da.total_regis_pop, pct: pct(1 - da.total_reg_pop_pct), color: "#3bb1d0" },
+      { name: "Voter", count: da.total_ballots_cast, pct: pct(da.total_turnout_reg_pct), color: "#ee8d1d" }
+    ];
+    hbsObject.legend_second = [
+      { name: "Registered Non-Voter", count: da.total_regis_pop - da.total_ballots_cast, pct: pct(1 - da.total_turnout_reg_pct), color: "#4f5f66"},
+      { name: "Men", count: da.male_ballots_cast, pct: pct(da.male_ballots_cast / da.total_ballots_cast), color: "#9ec4f7" },
+      { name: "Women", count: da.female_ballots_cast, pct: pct(da.female_ballots_cast / da.total_ballots_cast), color: "#ff99e8" }
+    ];
     // console.log(hbsObject);
     res.render("results", hbsObject)
   });

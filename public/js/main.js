@@ -46,5 +46,6 @@ $(document).ready(function() {
      //   return ($(this).attr("data-nonPct") * 100).toFixed(2) + "%";
      // });
      pctToPCT('#turnout');
+     pctToPCT('#pie-legend-total-turn')
    };
 });
