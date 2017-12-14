@@ -67,7 +67,7 @@ module.exports = function(sequelize, DataTypes) {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      // allowNull: false,
+      allowNull: false,
       primaryKey: true
     },
     lat: {
@@ -78,7 +78,6 @@ module.exports = function(sequelize, DataTypes) {
     },
     fips_code: {
       type: DataTypes.STRING,
-      // allowNull: false
     }
   }, { timestamps: false });
 
