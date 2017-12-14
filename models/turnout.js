@@ -60,7 +60,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DOUBLE,
       allowNull: false
     },
-    total_turout_reg_pct: {
+    total_turnout_reg_pct: {
       type: DataTypes.DOUBLE,
       allowNull: false
     },
