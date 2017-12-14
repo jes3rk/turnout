@@ -1,0 +1,42 @@
+<!-- open primary container -->
+<div class="container">
+  {{> nav-partial}}
+  <!-- first row -->
+  <div class="row">
+    <!-- first col -->
+    <div class="col s12 m12">
+      <!-- map row -->
+      <div class="row">
+        <div class="col s6 m6">
+          <div class="small-leaflet">
+            <!-- inset mini-map here -->
+              {{> map-partial}}
+          </div>
+        </div>
+        <div class="col s6 m6">
+          <div class="county-name">
+            <!-- insert county info here -->
+              {{> county-partial}}
+          </div>
+          <br>
+           <div class="breakdown">
+              {{> breakdown-partial}}
+            <!-- insert caption info here -->
+          </div>
+        </div>
+        </div>
+      </div> <!-- Close map row -->
+      <!-- open button row -->
+      <div class="row">
+        <div class="col s12 m12">
+          <!-- text row -->
+          <div class="row">
+            <p id="data-viz">Test text</p>
+              {{> breakdown-partial}}
+          </div>
+        </div>
+      </div> <!-- Close button row -->
+    
+    </div> <!-- close row -->
+<!--   </div> -->
+</div> <!-- close primary container -->
