@@ -1,5 +1,6 @@
 alert('connected bitch');
 
+var test = 'hi';
 
 var statesData = {"type":"FeatureCollection","features":[
     {"type":"Feature","id":"01","properties":{"name":"Alabama","density":94.65},"geometry":{"type":"Polygon","coordinates":[[[-87.359296,35.00118],[-85.606675,34.984749],[-85.431413,34.124869],[-85.184951,32.859696],[-85.069935,32.580372],[-84.960397,32.421541],[-85.004212,32.322956],[-84.889196,32.262709],[-85.058981,32.13674],[-85.053504,32.01077],[-85.141136,31.840985],[-85.042551,31.539753],[-85.113751,31.27686],[-85.004212,31.003013],[-85.497137,30.997536],[-87.600282,30.997536],[-87.633143,30.86609],[-87.408589,30.674397],[-87.446927,30.510088],[-87.37025,30.427934],[-87.518128,30.280057],[-87.655051,30.247195],[-87.90699,30.411504],[-87.934375,30.657966],[-88.011052,30.685351],[-88.10416,30.499135],[-88.137022,30.318396],[-88.394438,30.367688],[-88.471115,31.895754],[-88.241084,33.796253],[-88.098683,34.891641],[-88.202745,34.995703],[-87.359296,35.00118]]]}},
@@ -84,34 +85,39 @@ L.geoJson(statesData).addTo(map);
 
 
 //code below adds counties to map!!!!!!!!!!!!!!!!!!!!!!!!!/////////////////////
-// var counties = new L.geoJson();
-// counties.addTo(map);
+var counties = new L.geoJson();
+counties.addTo(map);
 
-// $.ajax({
-// dataType: "json",
-// url: "./data/counties.geojson",
-// success: function(data) {
-//     $(data.features).each(function(key, data) {
-//         counties.addData(data);
-//     });
-// }
-// })
+$.ajax({
+dataType: "json",
+url: "./data/counties.geojson",
+success: function(data) {
+    $(data.features).each(function(key, data) {
+        if(data.properties.STATE === '53'){
+        counties.addData(data);
+        console.log(data);
+        
+        console.log(data.properties);
+        }
+    });
+}
+})
 /////////////////////////////////////////////////////////interactive choloropleth map test below////
 
 function getColor(d) {
     return d > 1000 ? '#800026' :       
-           d > 500  ? '#BD0026' :
+           d > 500  ? 'green' :
            d > 200  ? '#E31A1C' :
-           d > 100  ? '#FC4E2A' :
+           d > 100  ? 'black' :
            d > 50   ? '#FD8D3C' :
            d > 20   ? '#FEB24C' :
-           d > 10   ? '#FED976' :
+           d > 10   ? 'grey' :
                       '#FFEDA0';
 }
 
 function style(feature) {
     return {
-        fillColor: getColor(feature.properties.density),
+        fillColor: getColor(test),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -128,9 +134,9 @@ var geoJson;
 
 function highlightFeature(e) {
     var layer = e.target;
-
+//sets the color and settings of the outline when hovering
     layer.setStyle({
-        weight: 5,
+        weight: 3,
         color: '#666',
         dashArray: '',
         fillOpacity: 0.7
