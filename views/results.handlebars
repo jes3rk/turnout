@@ -1,0 +1,74 @@
+<!-- primary container -->
+<div class="container">
+  <!-- nav stuff -->
+  {{> nav-partial}}
+  <!-- first row -->
+  <div class="row">
+    <!-- map col -->
+    <div class="col s12 m6">
+      <div class="leaflet-div">
+
+      </div>
+      <div class="caption-row">
+        <p>{{county}}</p>
+      </div>
+    </div>
+    <!-- data col -->
+    <div class="col s12 m6">
+      <!-- top row -->
+      <div class="row">
+        <h1>{{county}}</h1>
+      </div>
+      <!-- bottom row -->
+      <div class="row">
+        <!-- first col -->
+        <div class="col s4 m12">
+          <h6>Eligible Population</h6>
+          <h5>{{total_elig_pop}}</h5>
+        </div>
+        <!-- second col -->
+        <div class="col s4 m12">
+          <h6>Registered Population</h6>
+          <h5>{{total_regis_pop}}</h5>
+        </div>
+        <!-- third col -->
+        <div class="col s4 m12">
+          <h6>Turnout Rate</h6>
+          <h5>{{total_turnout_pop_pct}}</h5>
+        </div>
+      </div>
+    </div> <!-- end of the data col -->
+  </div> <!-- end of the first row -->
+  <!-- visualization row -->
+  <div class="rows">
+    <!-- left column -->
+    <div class="col s12 m6">
+      <div class="pie-chart">
+
+      </div>
+      <div class="pie-legend">
+
+      </div>
+    </div>
+    <!-- right column -->
+    <div class="col s12 m6">
+      <div class="row">
+        <!-- chart col -->
+        <div class="col s12 m9">
+          <div class="bar-chart">
+
+          </div>
+          <div class="bar-legend">
+
+          </div>
+        </div>
+        <!-- button column -->
+        <div class="col s12 m3">
+          <a class="waves-effect waves-light btn" id="total">Total</a>
+          <a class="waves-effect waves-light btn" id="men">Men</a>
+          <a class="waves-effect waves-light btn" id="women">Women</a>
+        </div>
+      </div>
+    </div>
+  </div> <!-- end of visualization row -->
+</div>
