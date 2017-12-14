@@ -16,6 +16,10 @@ module.exports = function(sequelize, DataTypes) {
     long: {
       type: DataTypes.FLOAT
     },
+    fips_code: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     year: {
       type: DataTypes.INTEGER,
       allowNull: false
