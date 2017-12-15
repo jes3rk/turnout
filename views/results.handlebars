@@ -14,10 +14,10 @@
       </div>
     </div>
     <!-- data col -->
-    <div class="col s12 m6">
+    <div class="col s12 m6 left-align">
       <!-- top row -->
       <div class="row">
-        <h1>{{county}}</h1>
+        <h1 id="county-name" data-fips={{fips_code}}>{{county}}</h1>
       </div>
       <!-- bottom row -->
       <div class="row">
@@ -34,50 +34,70 @@
         <!-- third col -->
         <div class="col s4 m12">
           <h6>Turnout Rate</h6>
-          <h5>{{total_turnout_pop_pct}}</h5>
+          <h5 id="turnout" data-nonPct={{total_turnout_pop_pct}}></h5>
         </div>
       </div>
     </div> <!-- end of the data col -->
   </div> <!-- end of the first row -->
-  <!-- visualization row -->
-  <div class="rows">
-    <!-- left column -->
+  <!-- pie chart row -->
+  <div class="row">
+    <!-- chart column -->
     <div class="col s12 m6">
       <div class="pie-chart">
 
       </div>
-      <div class="pie-legend">
-
-      </div>
     </div>
-    <!-- right column -->
-    <div class="col s12 m6">
+    <!-- legend column -->
+    <div class="col s12 m6 right-align">
+      <!-- header row -->
       <div class="row">
-        <!-- chart col -->
-        <div class="col s12 m9">
-          <div class="bar-chart">
+        <h4>How Often Do Voters Actually Vote in {{county}} County?</h4>
+      </div>
+      <!-- desc row -->
+      <div class="row">
+        <p>Voter turnout only tells half the story. How many of the eligble voters are actually registered to vote in {{county}} County? How many of those registered voters actually cast a ballot? These are important questions in determining the efficacy of voter outreach and other efforts.</p>
+        <p>The chart to the left shows the relationship between eligible voters, registerd voters, ballots cast, and gender in the 2016 General Election. Click on each slice of the pie to highlight relationships!</p>
+      </div>
+      <!-- legend row -->
+      <div class="row valign-wrapper">
+        {{> pie-legend}}
+      </div>
+    </div>
+  </div>
+  <!-- bar chart row -->
+  <div class="row">
+    <!-- legend column -->
+    <div class="col s12 m4 left-align">
+      <!-- header row -->
+      <div class="row">
+        <h4>Comparing The Voting Behavior Of {{county}} County and the State of Washington</h4>
+      </div>
+      <!-- desc row -->
+      <div class="row">
 
-          </div>
-          <div class="bar-legend">
+      </div>
+      <!-- legend row -->
+      <div class="row">
 
-          </div>
+      </div>
+      <!-- buttons -->
+      <div class="row">
+        <div class="col s4 m4">
+          <a class="waves-effect waves-light btn" id="total">Total</a>
         </div>
-        <!-- button column -->
-        <div class="col s12 m3">
-          <!-- first button -->
-          <div class="row">
-            <a class="waves-effect waves-light btn" id="total">Total</a>
-          </div>
-          <!-- second button -->
-          <div class="row">
-            <a class="waves-effect waves-light btn" id="men">Men</a>
-          </div>
-          <!-- third button -->
-          <div class="row">
-            <a class="waves-effect waves-light btn" id="women">Women</a>
-          </div>    
+        <div class="col s4 m4">
+          <a class="waves-effect waves-light btn" id="men">Men</a>
+        </div>
+        <div class="col s4 m4">
+          <a class="waves-effect waves-light btn" id="women">Women</a>
         </div>
       </div>
     </div>
-  </div> <!-- end of visualization row -->
+    <!-- chart column -->
+    <div class="col s12 m8">
+      <div class="bar-chart">
+
+      </div>
+    </div>
+  </div>
 </div>
