@@ -41,7 +41,7 @@ $(document).ready(function() {
 
    if ($('#county-name')) {
      // console.log($('#county-name').attr("data-fips"));
-     pieData($('#county-name').attr("data-fips"));
+     getData($('#county-name').attr("data-fips"));
      // $('#turnout').text(function() {
      //   return ($(this).attr("data-nonPct") * 100).toFixed(2) + "%";
      // });

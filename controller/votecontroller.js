@@ -42,18 +42,21 @@ router.get("/Washington/:code", function(req, res) {
     ];
     // console.log(hbsObject);
     res.render("results", hbsObject)
+  }).catch(function(err) {
+    console.log(err);
+    res.render("error");
   });
 });
 
 // data grabber for pie chart
-router.get("/api/pie/:code", function(req, res) {
+router.get("/api/data/:code", function(req, res) {
   db.Washington_state_data.findOne({
     where: {
       fips_code: req.params.code
     }
   }).then(function(data) {
     var da = data.dataValues;
-    var obj = {
+    var pie = {
       name: da.county,
       fips_code: da.fips_code,
       data: {
@@ -63,7 +66,7 @@ router.get("/api/pie/:code", function(req, res) {
             name: "Registered Voters",
             children: [
               {
-                name: "Voted",
+                name: "Voter",
                 children: [
                   { name: "Men", size: da.male_ballots_cast },
                   { name: "Women", size: da.female_ballots_cast }
@@ -76,7 +79,20 @@ router.get("/api/pie/:code", function(req, res) {
         ]
       }
     };
-    res.json(obj);
+    var bar = {
+
+    };
+    var result = {
+      pieData: pie,
+      barData: bar
+    };
+    res.json(result);
   });
+});
+
+router.get("/api/bar/:code", function(req, res) {
+  db.Washington_state_data.findOne({
+
+  })
 });
 module.exports = router;
