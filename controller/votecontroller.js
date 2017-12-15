@@ -100,10 +100,7 @@ router.get("/api/user_data", function(req, res) {
     }
 });
 
-
-
-
-
+router.get("/Washington/:code", function(req, res) {
   // console.log(db);
   var state = req.params.state;
   db.Washington_state_data.findOne({
@@ -131,7 +128,7 @@ router.get("/api/user_data", function(req, res) {
     console.log(err);
     res.render("error");
   });
-};
+});
 
 // data grabber for pie chart
 router.get("/api/data/:code", function(req, res) {
@@ -227,7 +224,7 @@ module.exports = router;
 //   //   res.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 //   // });
 
-//  //// Just trying to test passport... delete later  
+//  //// Just trying to test passport... delete later
 
 
 

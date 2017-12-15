@@ -103,7 +103,7 @@ function barGenerator(data) {
   }
 
   // Color scale
-  var color = d3.scaleOrdinal(["red", "blue", "purple", "green"]);
+  var color = d3.scaleOrdinal(["red", "blue", "purple", "green "]);
   var chartHeight = barHeight * zippedData.length + gapBetweenGroups * data.labels.length;
 
   var x = d3.scaleLinear()
