@@ -81,32 +81,64 @@ var circle = L.circle([34.9592, -116.4194], {
   }).addTo(map);
 
 
-L.geoJson(statesData).addTo(map);
+//L.geoJson(statesData).addTo(map);
 
 
 //code below adds counties to map!!!!!!!!!!!!!!!!!!!!!!!!!/////////////////////
 var counties = new L.geoJson();
 counties.addTo(map);
+var countyData = new L.geoJson();
+var countyDataTest = {};
+var cdata = {
+    type: 'FeatureCollection',
+    features: [],
+};
+
+
+
 
 $.ajax({
 dataType: "json",
+type: 'GET',
 url: "./data/counties.geojson",
 success: function(data) {
     $(data.features).each(function(key, data) {
         if(data.properties.STATE === '53'){
         counties.addData(data);
         console.log(data);
-        
-        console.log(data.properties);
-        }
-    });
+        cdata.features.push(data);
+        countyData.addData(data);
+    }
+});
 }
 })
+// .then(function(){
+//     // console.log(countyData._layers)
+//     data = countyData._layers;
+//     // console.log(data)
+      
+//     // data.forEach(function(){
+//     //     console.log(data);
+//         Object.keys(data).forEach(function(key){
+//             // console.log(data[key].feature);
+//             cdata.push(data[key].feature);
+
+//         })
+//         // Array.prototype.forEach.call(data.feature, properties => {
+//         //   console.log(properties)
+//         // });
+        
+//     })
+    // console.log(countyDataTest)
+
+
+console.log(statesData);
+console.log(cdata);
 /////////////////////////////////////////////////////////interactive choloropleth map test below////
 
 function getColor(d) {
     return d > 1000 ? '#800026' :       
-           d > 500  ? 'green' :
+           d == 'hi'  ? 'green' :
            d > 200  ? '#E31A1C' :
            d > 100  ? 'black' :
            d > 50   ? '#FD8D3C' :
@@ -126,7 +158,6 @@ function style(feature) {
     };
 }
 
-L.geoJson(statesData, {style: style}).addTo(map);
 
 
 //////////////////hover events
@@ -167,10 +198,10 @@ function onEachFeature(feature, layer) {
     });
 }
 
-geojson = L.geoJson(statesData, {
-    style: style,
-    onEachFeature: onEachFeature
-}).addTo(map);
+// geojson = L.geoJson(statesData, {
+//     style: style,
+//     onEachFeature: onEachFeature
+// }).addTo(map);
 
 
 var info = L.control();
@@ -189,4 +220,3 @@ info.update = function (props) {
 };
 
 info.addTo(map);
-
