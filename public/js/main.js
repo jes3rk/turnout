@@ -1,6 +1,7 @@
 var loginForm = $("form.login");
 var emailInput = $("input#email-input");
 var passwordInput = $("input#password-input");
+var leafletData;
 
 loginForm.on("submit", function(event) {
   event.preventDefault();
@@ -36,8 +37,15 @@ function pctToPCT(elementID) {
   });
 };
 
+function leafData() {
+  $.get("/api/leaf").done(function(data) {
+    console.log(data);
+  });
+};
+
 $(document).ready(function() {
    $(".button-collapse").sideNav();
+   leafData();
 
    if ($('#county-name')) {
      // console.log($('#county-name').attr("data-fips"));

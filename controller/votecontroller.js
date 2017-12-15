@@ -1,6 +1,8 @@
 var express = require("express");
 var db = require("../models");
 
+var Op = db.Sequelize.Op;
+
 var router = express.Router();
 
 function pct(num) {
@@ -80,13 +82,19 @@ router.get("/api/data/:code", function(req, res) {
       }
     };
     var bar = {
+      name: da.county,
+      fips_code: da.fips_code,
+      data: {
 
+      }
     };
     var result = {
       pieData: pie,
       barData: bar
     };
     res.json(result);
+  }).catch(function(err) {
+    console.log(err);
   });
 });
 
@@ -94,5 +102,25 @@ router.get("/api/bar/:code", function(req, res) {
   db.Washington_state_data.findOne({
 
   })
+});
+
+router.get("/api/leaf", function(req, res) {
+  db.Washington_state_data.findAll({
+    attributes: ["county", "total_turnout_pop_pct", "fips_code"],
+    where: {
+      fips_code:  {
+        [Op.not]: "null"
+      }
+    }
+  }).then(function(data) {
+    console.log(data[0].dataValues);
+    var obj = []
+    for (var i = 0; i < data.length; i++) {
+      obj.push(data[i].dataValues);
+    };
+    res.json(obj);
+  }).catch(function(err) {
+    console.log(err);
+  });
 });
 module.exports = router;
