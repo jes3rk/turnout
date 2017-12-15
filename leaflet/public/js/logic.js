@@ -60,64 +60,84 @@ var statesData = {"type":"FeatureCollection","features":[
 
 
 
-// .error(function() {});
 
-// var statesData = newGeoJason.AJAX('../data/us-states.geojson')
+
+
 
 var mapboxAccessToken = 'pk.eyJ1IjoieWplb25nMTkiLCJhIjoiY2piNTdteWdwMzdpNTMzbzloNW41amY1dSJ9.bZJN4ceMtDY7GA6d-h23ow';
-var map = L.map('mapId').setView([37.8, -96], 4);
+var map = L.map('mapId').setView([47.7511, -120.7401], 6);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + mapboxAccessToken, {
     id: 'mapbox.light',
     // attribution: ...
 }).addTo(map);
 
-
-var circle = L.circle([34.9592, -116.4194], {
-  color: 'red',
-  fillColor: '#f03',
-  fillOpacity: 0.5,
-  radius: 5000
-  }).addTo(map);
-
-
-L.geoJson(statesData).addTo(map);
-
-
 //code below adds counties to map!!!!!!!!!!!!!!!!!!!!!!!!!/////////////////////
 var counties = new L.geoJson();
 counties.addTo(map);
+var countyData = new L.geoJson();
+var countyDataTest = {};
+var cdata = {
+    type: 'FeatureCollection',
+    features: [],
+};
+
 
 $.ajax({
 dataType: "json",
+type: 'GET',
 url: "./data/counties.geojson",
 success: function(data) {
     $(data.features).each(function(key, data) {
         if(data.properties.STATE === '53'){
         counties.addData(data);
-        console.log(data);
-        
-        console.log(data.properties);
-        }
-    });
+        // console.log(data);
+        cdata.features.push(data);
+        countyData.addData(data);
+    }
+});
 }
-})
+}).then(function(){
+    // L.geoJson(cdata).addTo(map)
+    L.geoJson(cdata, {style: style}).addTo(map);
+    geojson = L.geoJson(cdata, {
+        style: style,
+        onEachFeature: onEachFeature
+    }).addTo(map);
+
+    info.addTo(map);
+
+});
+
+
+if(true){
+var circle = L.circle([47.6062, -122.3321], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 5000
+  }).addTo(map);
+}
+
+
+
 /////////////////////////////////////////////////////////interactive choloropleth map test below////
 
 function getColor(d) {
-    return d > 1000 ? '#800026' :       
-           d > 500  ? 'green' :
-           d > 200  ? '#E31A1C' :
-           d > 100  ? 'black' :
-           d > 50   ? '#FD8D3C' :
+    return d == '001' ? '#800026' :       
+           d == '002' ? 'green' :
+           d == '003'  ? '#E31A1C' :
+           d == '009'  ? 'black' :
+           d == 'hi'   ? '#FD8D3C' :
            d > 20   ? '#FEB24C' :
            d > 10   ? 'grey' :
                       '#FFEDA0';
 }
 
+
 function style(feature) {
     return {
-        fillColor: getColor(test),
+        fillColor: getColor(feature.properties.COUNTY),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -126,7 +146,7 @@ function style(feature) {
     };
 }
 
-L.geoJson(statesData, {style: style}).addTo(map);
+// L.geoJson(cdata, {style: style}).addTo(map);
 
 
 //////////////////hover events
@@ -167,12 +187,6 @@ function onEachFeature(feature, layer) {
     });
 }
 
-geojson = L.geoJson(statesData, {
-    style: style,
-    onEachFeature: onEachFeature
-}).addTo(map);
-
-
 var info = L.control();
 
 info.onAdd = function (map) {
@@ -188,5 +202,10 @@ info.update = function (props) {
         : 'Hover over a state');
 };
 
-info.addTo(map);
+// info.addTo(map);
 
+
+
+function getdata(x){
+    console.log(x.features)
+}
