@@ -6,7 +6,11 @@ var Op = db.Sequelize.Op;
 var router = express.Router();
 
 function pct(num) {
-  return (num * 100).toFixed(2) + "%";
+  return mul100(num) + "%";
+};
+
+function mul100(num) {
+  return (num * 100).toFixed(2);
 };
 
 // Import the model (cat.js) to use its database functions.
@@ -52,12 +56,16 @@ router.get("/Washington/:code", function(req, res) {
 
 // data grabber for pie chart
 router.get("/api/data/:code", function(req, res) {
-  db.Washington_state_data.findOne({
+  db.Washington_state_data.findAll({
     where: {
-      fips_code: req.params.code
+      fips_code: {
+        [Op.or]: [req.params.code, "null"]
+      }
     }
   }).then(function(data) {
-    var da = data.dataValues;
+    // console.log(data[1].dataValues);
+    var da = data[0].dataValues;
+    var ba = data[1].dataValues;
     var pie = {
       name: da.county,
       fips_code: da.fips_code,
@@ -82,11 +90,17 @@ router.get("/api/data/:code", function(req, res) {
       }
     };
     var bar = {
-      name: da.county,
-      fips_code: da.fips_code,
-      data: {
-
-      }
+      labels: ["Eligible Voter Turnout", "Registered Voter Turnout", "Pct Registered Voters"],
+      series: [
+        {
+          label: "Washington State",
+          values: [ba.total_turnout_pop_pct, ba.total_turnout_reg_pct, ba.total_reg_pop_pct]
+        },
+        {
+          label: da.county + " County",
+          values: [da.total_turnout_pop_pct, da.total_turnout_reg_pct, da.total_reg_pop_pct]
+        }
+      ]
     };
     var result = {
       pieData: pie,
@@ -98,12 +112,6 @@ router.get("/api/data/:code", function(req, res) {
   });
 });
 
-router.get("/api/bar/:code", function(req, res) {
-  db.Washington_state_data.findOne({
-
-  })
-});
-
 router.get("/api/leaf", function(req, res) {
   db.Washington_state_data.findAll({
     attributes: ["county", "total_turnout_pop_pct", "fips_code"],
@@ -113,7 +121,7 @@ router.get("/api/leaf", function(req, res) {
       }
     }
   }).then(function(data) {
-    console.log(data[0].dataValues);
+    // console.log(data[0].dataValues);
     var obj = []
     for (var i = 0; i < data.length; i++) {
       obj.push(data[i].dataValues);
