@@ -168,7 +168,7 @@ router.get("/api/data/:code", function(req, res) {
 
 router.get("/api/leaf", function(req, res) {
   db.Washington_state_data.findAll({
-    attributes: ["county", "total_turnout_pop_pct", "fips_code"],
+    attributes: ["county", "total_turnout_pop_pct", "total_elig_pop", "total_ballots_cast", "fips_code"],
     where: {
       fips_code:  {
         [Op.not]: "null"
