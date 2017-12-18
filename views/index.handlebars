@@ -2,9 +2,10 @@
 <div class="container">
   {{> nav-partial}}
   <!-- primary row -->
+  <br>
   <div class="row">
     <!-- primary col -->
-    <div class="col s12 m12">
+    <div class="col s12 m12" id="results">
       <!-- map row -->
       <div class="row">
         <div class="col s12 m12">
@@ -22,13 +23,13 @@
           <!-- top row -->
           <div class="row">
             <div class="col s12 m4">
-              <a class="waves-effect waves-light btn">Low Turnout</a>
+              <a class="waves-effect waves-light btn" id="lowBtn">Low Turnout</a>
             </div>
             <div class="col s12 m4">
-              <a class="waves-effect waves-light btn">Medium Turnout</a>
+              <a class="waves-effect waves-light btn" id="medBtn">Medium Turnout</a>
             </div>
-            <div class="col s12 m4">
-              <a class="waves-effect waves-light btn">High Turnout</a>
+            <div class="col s12 m3">
+              <a class="waves-effect waves-light btn" id="highBtn">High Turnout</a>
             </div>
           </div>
           <!-- text row -->
@@ -38,10 +39,15 @@
         </div>
       </div> <!-- Close button row -->
       <!-- open dynamic info row -->
-      <div class="row">
-        <!-- info col -->
-        <div class="col s12 m8">
+  </div>
 
+</div>
+      <br>
+      <div class="row" id="about">
+        <!-- info col -->
+        <div class="col s12 m12">
+        <h2 align="center">About</h2>
+        <p>An informed and engaged electorate is essential to a functional democracy. Although the U.S is often thought of as the standard for a representative democracy the country has notoriously low voter participation. The goal of Votify is to help campaigns and organizations identify counties where voter participation/enrollment is low so they can use organize to help register and turnout more voters.</p>
         </div>
         <!-- button col -->
         <div class="col s12 m4">
@@ -51,3 +57,81 @@
     </div>
   </div>
 </div> <!-- close primary container -->
+
+<!-- <div class="container"> -->
+                    <div class="row">
+                        <div class="heading-title text-center">
+                            <h3 class="text-uppercase">The Team </h3>
+                            <p class="p-top-30 half-txt">Nam pulvinar vitae neque et porttitor. Praesent sed nisi eleifend. Nam pulvinar vitae neque et porttitor. Praesent sed nisi eleifend. </p>
+                        </div>
+
+                        <div class="col s4 m4">
+                            <div class="team-member">
+                                <div class="team-img">
+                                    <img src="https://image.freepik.com/free-photo/man-standing-with-a-black-t-shirt_1187-1045.jpg" alt="team member" class="img-responsive">
+                                </div>
+                                <div class="team-hover">
+                                    <div class="desk">
+                                        <h4>Hi There !</h4>
+                                        <p>I love to introduce myself as a hardcore Web Designer.</p>
+                                    </div>
+                                    <div class="s-link">
+                                        <a href="#"><i class="fa fa-facebook"></i></a>
+                                        <a href="#"><i class="fa fa-twitter"></i></a>
+                                        <a href="#"><i class="fa fa-google-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-title">
+                                <h5>Dane Sherrets</h5>
+                                <span>Project Lead</span>
+                            </div>
+                        </div>
+                        <div class="col s4 m4">
+                            <div class="team-member">
+                                <div class="team-img">
+                                    <img src="https://scontent.cdninstagram.com/t51.2885-15/s320x320/e35/19954871_334924766938799_5402780116306624512_n.jpg">
+                                </div>
+                                <div class="team-hover">
+                                    <div class="desk">
+                                        <h4>Hello World</h4>
+                                        <p>Stuff about politics</p>
+                                    </div>
+                                    <div class="s-link">
+                                        <a href="#"><i class="fa fa-facebook"></i></a>
+                                        <a href="#"><i class="fa fa-twitter"></i></a>
+                                        <a href="#"><i class="fa fa-google-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-title">
+                                <h5>Young</h5>
+                                <span>Cheif UX Officer</span>
+                            </div>
+                        </div>
+                       <div class="col s4 m4">
+                                                   <div class="team-member">
+                                <div class="team-img">
+                                    <img src="https://image.freepik.com/free-photo/well-dressed-executive-with-crossed-arms_1098-3930.jpg" alt="team member" class="img-responsive">
+                                </div>
+                                <div class="team-hover">
+                                    <div class="desk">
+                                        <h4>Stuff about Leaflet</h4>
+                                        <p>I love to introduce myself as a hardcore Web Designer.</p>
+                                    </div>
+                                    <div class="s-link">
+                                        <a href="#"><i class="fa fa-facebook"></i></a>
+                                        <a href="#"><i class="fa fa-twitter"></i></a>
+                                        <a href="#"><i class="fa fa-google-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-title">
+                                <h5>Joeseph</h5>
+                                <span>Chief Backend Officer</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>

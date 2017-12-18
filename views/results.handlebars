@@ -2,8 +2,10 @@
 <div class="container">
   <!-- nav stuff -->
   {{> nav-partial}}
+  <br>
+  <br>
   <!-- first row -->
-  <div class="row">
+  <div class="row" id="resultsWhite">
     <!-- map col -->
     <div class="col s12 m6">
       <div class="leaflet-div">
@@ -40,7 +42,7 @@
     </div> <!-- end of the data col -->
   </div> <!-- end of the first row -->
   <!-- pie chart row -->
-  <div class="row">
+  <div class="row" id="chart">
     <!-- chart column -->
     <div class="col s12 m6">
       <div class="pie-chart">
@@ -65,7 +67,7 @@
     </div>
   </div>
   <!-- bar chart row -->
-  <div class="row">
+  <div class="row" id="resultsCounty" >
     <!-- legend column -->
     <div class="col s12 m4 left-align">
       <!-- header row -->
