@@ -13,11 +13,6 @@ var isAuthenticated = require("../config/middleware/isAuthenticated.js");
 
 
 
-
-
-
-
-
 function pct(num) {
   return mul100(num) + "%";
 };
@@ -128,7 +123,11 @@ router.get("/Washington/:code", function(req, res) {
     console.log(err);
     res.render("error");
   });
+
+
+
 });
+
 
 // data grabber for pie chart
 router.get("/api/data/:code", function(req, res) {
