@@ -11,13 +11,6 @@ var Op = db.Sequelize.Op;
 var router = express.Router();
 var isAuthenticated = require("../config/middleware/isAuthenticated.js");
 
-
-
-
-
-
-
-
 function pct(num) {
   return mul100(num) + "%";
 };
@@ -50,29 +43,13 @@ router.get("/signup", function(req, res) {
     // res.sendFile(path.join(__dirname, "../public/signup.html"));
     res.render("signup");
 });
-// results page Router
-router.get("/Washington/:code", function(req, res) {
-
-    // console.log(db);
-    var state = req.params.state;
-    db.Washington_state_data.findOne({
-        where: {
-            fips_code: req.params.code
-        }
-    }).then(function(data) {
-        // console.log(data);
-        var hbsObject = data.dataValues;
-        console.log(hbsObject);
-        res.render("results", hbsObject)
-    })
-})
 
 router.post("/api/login", passport.authenticate("local"), function(req, res) {
     res.json("/members");
 });
 
 router.post("/api/signup", function(req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     db.User.create({
         email: req.body.email,
         password: req.body.password
@@ -165,19 +142,14 @@ router.get("/api/data/:code", function(req, res) {
         ]
       }
     };
-    var bar = {
-      labels: ["Eligible Voter Turnout", "Registered Voter Turnout", "Pct Registered Voters"],
-      series: [
-        {
-          label: "Washington State",
-          values: [ba.total_turnout_pop_pct, ba.total_turnout_reg_pct, ba.total_reg_pop_pct]
-        },
-        {
-          label: da.county + " County",
-          values: [da.total_turnout_pop_pct, da.total_turnout_reg_pct, da.total_reg_pop_pct]
-        }
-      ]
-    };
+    var bar = [
+      { cat: "Washington State", percentage: ba.total_turnout_pop_pct, label: "Turnout by Eligible Voters" },
+      { cat: da.county + " County", percentage: da.total_turnout_pop_pct, label: "Turnout by Eligible Voters" },
+      { cat: "Washington State", percentage: ba.total_turnout_reg_pct, label: "Turnout by Registered Voters" },
+      { cat: da.county + " County", percentage: da.total_turnout_reg_pct, label: "Turnout by Registered Voters" },
+      { cat: "Washington State", percentage: ba.total_reg_pop_pct, label: "% Of Eligible Voters Registered" },
+      { cat: da.county + " County", percentage: da.total_reg_pop_pct, label: "% Of Eligible Voters Registered" }
+    ]
     var result = {
       pieData: pie,
       barData: bar
