@@ -67,7 +67,22 @@ function style2(feature) {
     };
 }
 
+function loadData(e) {
+    var layer = e.target;
+    console.log(e)
+    // console.log(layer.feature);
+//sets the color and settings of the outline when hovering
+    layer.setStyle(style(e));
 
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+    info.update(layer.feature.properties, vdata);
+    info._div.innerHTML += '<button>Click Here for more info</button>';
+    
+    
+}
+// loadData(cdata);
 
 
 
@@ -84,12 +99,12 @@ if(true){
 }
 
 ///////////voter data test ///////////////////////////
-var voterData;
+// var voterData;
 
 var color;
 var leafData = function () {
     $.get("/api/leaf").done(function(data) {
-    //   console.log(data);
+      console.log(data);
        var keys = Object.keys(data);
     //  keys.forEach(function(){
     //      console.log(data[keys[0]].fips_code)
@@ -102,7 +117,7 @@ var leafData = function () {
     
     
 }).then(function(data){
-    voterData = data;
+    // voterData = data;
     console.log(data);
 
     for(var i = 0; i < data.length; i++){
@@ -131,7 +146,8 @@ console.log(vdata)
 
 
 //////function that gets the color of the states///
-function getColor(d) {
+function getColor(d, button) {
+    console.log(vdata)
     for (var i=0; i<vdata.length;i++){
     if(d === vdata[i].fips_code){
 
@@ -186,7 +202,7 @@ function highlightFeature(e) {
         layer.bringToFront();
     }
     info.update(layer.feature.properties, vdata);
-    info._div.innerHTML += '<button>Click Here for more info</button>';
+    // info._div.innerHTML += '<button id="infoPage">Click Here for more info</button>';
     
     
 }
@@ -196,14 +212,16 @@ function userSelect(e){
     var layer = e.target;
     zoomToFeature(e);
     console.log(layer.feature.properties.COUNTY);
-    info._div.innerHTML += '<button>Click Here for more info</button>';
+    info._div.innerHTML += '<button id="infoPage">Click Here for more info</button>';
+    // info._div += L.DomUtil.create('button', 'infoPage');
+    // $('#infoPage').attr('onclick', getData());  
 }
 
 /////county click
 
 function resetHighlight(e) {
     geojson.resetStyle(e.target);
-    info.update();
+    // info.update();
     
 }
 
@@ -251,5 +269,6 @@ info.update = function (county, voter) {
     // var keys = Object.keys(voter);
    
     }
+
 
 
