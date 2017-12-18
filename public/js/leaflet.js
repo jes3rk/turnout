@@ -1,5 +1,7 @@
 alert('connected bitch');
 
+console.log(this);
+
 
 var test = 'hi';
 var mapboxAccessToken = 'pk.eyJ1IjoieWplb25nMTkiLCJhIjoiY2piNTdteWdwMzdpNTMzbzloNW41amY1dSJ9.bZJN4ceMtDY7GA6d-h23ow';
@@ -12,15 +14,15 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token='
 }).addTo(map);
 
 //code below adds counties to map!!!!!!!!!!!!!!!!!!!!!!!!!/////////////////////
-var counties = new L.geoJson();
-counties.addTo(map);
-var countyData = new L.geoJson();
-var countyDataTest = {};
+// var counties = new L.geoJson();
+// counties.addTo(map);
+// var countyData = new L.geoJson();
 var cdata = {
     type: 'FeatureCollection',
     features: [],
 };
 
+// var showAll=function(x){
 
 $.ajax({
 dataType: "json",
@@ -29,17 +31,17 @@ url: "./data/counties.geojson",
 success: function(data) {
     $(data.features).each(function(key, data) {
         if(data.properties.STATE === '53'){
-        counties.addData(data);
+        // counties.addData(data);
         // console.log(data);
         cdata.features.push(data);
-        countyData.addData(data);
+        // countyData.addData(data);
     }
 });
 }
 }).then(function(){
-    // L.geoJson(cdata).addTo(map)
+    // L.geoJson(cdata).addTo(map) 
     info.addTo(map);
-    L.geoJson(cdata, {style: style}).addTo(map);
+    // L.geoJson(cdata, {style: style}).addTo(map);
     geojson = L.geoJson(cdata, {
         style: style,
         onEachFeature: onEachFeature
@@ -47,47 +49,118 @@ success: function(data) {
 
 
 });
+// }
 
 
-var abc = leafData();
+
+function style2(feature) {
+    // console.log(feature)
+    
+    return {
+        fillColor: getColor(feature.properties.COUNTY),
+// fillColor: 'red',
+        fillOpacity: 0.5,
+        weight: 1,
+        opacity: 1,
+        color: 'black',
+        // dashArray: '3',
+    };
+}
 
 
-console.log(leafletData)
+
+
+
 
 
 if(true){
-var circle = L.circle([47.6062, -122.3321], {
-  color: 'red',
-  fillColor: '#f03',
-  fillOpacity: 0.5,
-  radius: 5000
-  }).addTo(map);
+    var circle = L.circle([47.6062, -122.3321], {
+        color: 'black',
+        fillColor: '#f03',
+        fillOpacity: 0.5,
+        radius: 5000
+    }).addTo(map);
+    circle.bringToFront();
 }
 
+///////////voter data test ///////////////////////////
+var voterData;
+
+var color;
+var leafData = function () {
+    $.get("/api/leaf").done(function(data) {
+    //   console.log(data);
+       var keys = Object.keys(data);
+    //  keys.forEach(function(){
+    //      console.log(data[keys[0]].fips_code)
+    //     })
+
+
+    return data;
+    
+    
+    
+    
+}).then(function(data){
+    voterData = data;
+    console.log(data);
+
+    for(var i = 0; i < data.length; i++){
+        // console.log(data[i]);
+        vdata.push(data[i])
+    }
+
+    // geojson = L.geoJson(data, {
+    //     style: style,
+    //     onEachFeature: onEachFeature
+    // }).addTo(map);
+    
+    
+})
+};
+
+var vdata = [];
+  
+console.log(vdata)
+
+
+///////////////////////voter data test/////////////////////
 
 
 /////////////////////////////////////////////////////////interactive choloropleth map test below////
 
+
+//////function that gets the color of the states///
 function getColor(d) {
-    return d == '001' ? '#800026' :       
-           d == '002' ? 'green' :
-           d == '003'  ? '#E31A1C' :
-           d == '009'  ? 'black' :
-           d == 'hi'   ? '#FD8D3C' :
-           d > 20   ? '#FEB24C' :
-           d > 10   ? 'grey' :
-                      '#FFEDA0';
+    for (var i=0; i<vdata.length;i++){
+    if(d === vdata[i].fips_code){
+
+    if(vdata[i].total_turnout_pop_pct < 0.49){
+        return '#b80000';
+    }else if(vdata[i].total_turnout_pop_pct < 0.59){
+        return '#ebeb00';
+    }else{
+        return '#217e1b';
+        }   
+        }      
+    }
 }
 
 
+    
+
+
 function style(feature) {
+    // console.log(feature)
+    
     return {
-        fillColor: getColor(feature.properties.COUNTY),
-        weight: 2,
+        // fillColor: getColor(feature.properties.COUNTY),
+        fillColor: 'white',
+        fillOpacity: 0.5,
+        weight: 1,
         opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
+        color: 'black',
+        // dashArray: '3',
     };
 }
 
@@ -99,10 +172,12 @@ var geoJson;
 
 function highlightFeature(e) {
     var layer = e.target;
+    console.log(e)
+    console.log(layer.feature);
 //sets the color and settings of the outline when hovering
     layer.setStyle({
         weight: 3,
-        color: '#666',
+        color: 'yellow',
         dashArray: '',
         fillOpacity: 0.7
     });
@@ -110,9 +185,21 @@ function highlightFeature(e) {
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();
     }
-    info.update(layer.feature.properties);
+    info.update(layer.feature.properties, vdata);
+    info._div.innerHTML += '<button>Click Here for more info</button>';
+    
     
 }
+
+///////what does joe need returned////
+function userSelect(e){
+    var layer = e.target;
+    zoomToFeature(e);
+    console.log(layer.feature.properties.COUNTY);
+    info._div.innerHTML += '<button>Click Here for more info</button>';
+}
+
+/////county click
 
 function resetHighlight(e) {
     geojson.resetStyle(e.target);
@@ -121,14 +208,16 @@ function resetHighlight(e) {
 }
 
 function zoomToFeature(e) {
+    // console.log(e.target.getBounds());
     map.fitBounds(e.target.getBounds());
 }
 
 function onEachFeature(feature, layer) {
+   
     layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
-        click: zoomToFeature
+        click: userSelect
     });
 }
 
@@ -141,16 +230,26 @@ info.onAdd = function (map) {
 };
 
 // method that we will use to update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
-        '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-        : 'Hover over a state');
-};
+info.update = function (county, voter) {
+    console.log(county);
+    this._div.innerHTML = '<h4>State Voter Turnout</h4>'
+     '<p>:Hover over a state to see turnout</p>'
+                    
+    if(voter){
+        console.log(voter)
+        for(var i=0; i<voter.length; i++){
+            if (voter[i].fips_code === county.COUNTY){
+                
+                this._div.innerHTML +=  (county ?
+                '<b>' + county.NAME + '</b><br />' + Math.round(voter[i].total_turnout_pop_pct*100) + '%'
+                //  : 'Hover over a state to see turnout'
+                :''
+                );
+         }
+     }
+    }
+    // var keys = Object.keys(voter);
+   
+    }
 
-// info.addTo(map);
 
-
-
-function getdata(x){
-    console.log(x.features)
-}

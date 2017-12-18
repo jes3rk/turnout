@@ -37,12 +37,13 @@ function pctToPCT(elementID) {
   });
 };
 
-function leafData() {
-  $.get("/api/leaf").done(function(data) {
-    console.log(data);
-    leafletData = data;
-  });
-};
+// function leafData() {
+//   $.get("/api/leaf").done(function(data) {
+//     console.log(data);
+//     //  obj.push(data);
+//      return data
+//   });
+// };
 
 $(document).ready(function() {
    $(".button-collapse").sideNav();

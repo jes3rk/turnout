@@ -1,12 +1,29 @@
 var express = require("express");
 var db = require("../models");
 
+var passport = require("../config/passport");
+var path = require("path");
+
+
 var Op = db.Sequelize.Op;
 
+
 var router = express.Router();
+var isAuthenticated = require("../config/middleware/isAuthenticated.js");
+
+
+
+
+
+
+
 
 function pct(num) {
-  return (num * 100).toFixed(2) + "%";
+  return mul100(num) + "%";
+};
+
+function mul100(num) {
+  return (num * 100).toFixed(2);
 };
 
 // Import the model (cat.js) to use its database functions.
@@ -14,12 +31,75 @@ function pct(num) {
 
 // home page router
 router.get("/", function(req, res) {
-  // some sequelize call
-  var hbsObject;
-  res.render("index");
+    // some sequelize call
+    var hbsObject;
+    res.render("index");
 });
 
+
+router.get("/login", function(req, res) {
+    //res.sendFile(path.join(__dirname, "../public/login.html"));
+    res.render("login");
+});
+
+router.get("/members", function(req, res) {
+    res.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+});
+
+router.get("/signup", function(req, res) {
+    // res.sendFile(path.join(__dirname, "../public/signup.html"));
+    res.render("signup");
+});
 // results page Router
+router.get("/Washington/:code", function(req, res) {
+
+    // console.log(db);
+    var state = req.params.state;
+    db.Washington_state_data.findOne({
+        where: {
+            fips_code: req.params.code
+        }
+    }).then(function(data) {
+        // console.log(data);
+        var hbsObject = data.dataValues;
+        console.log(hbsObject);
+        res.render("results", hbsObject)
+    })
+})
+
+router.post("/api/login", passport.authenticate("local"), function(req, res) {
+    res.json("/members");
+});
+
+router.post("/api/signup", function(req, res) {
+    console.log(req.body);
+    db.User.create({
+        email: req.body.email,
+        password: req.body.password
+    }).then(function() {
+        res.redirect(307, "/api/login");
+    }).catch(function(err) {
+        console.log(err);
+        res.json(err);
+    });
+});
+
+router.get("/logout", function(req, res) {
+    req.logout();
+    res.redirect("/");
+});
+
+router.get("/api/user_data", function(req, res) {
+    if (!req.user) {
+        res.json({});
+    } else {
+        res.json({
+            email: req.user.email,
+            id: req.user.id
+        });
+    }
+});
+
 router.get("/Washington/:code", function(req, res) {
   // console.log(db);
   var state = req.params.state;
@@ -52,12 +132,16 @@ router.get("/Washington/:code", function(req, res) {
 
 // data grabber for pie chart
 router.get("/api/data/:code", function(req, res) {
-  db.Washington_state_data.findOne({
+  db.Washington_state_data.findAll({
     where: {
-      fips_code: req.params.code
+      fips_code: {
+        [Op.or]: [req.params.code, "null"]
+      }
     }
   }).then(function(data) {
-    var da = data.dataValues;
+    // console.log(data[1].dataValues);
+    var da = data[0].dataValues;
+    var ba = data[1].dataValues;
     var pie = {
       name: da.county,
       fips_code: da.fips_code,
@@ -82,11 +166,17 @@ router.get("/api/data/:code", function(req, res) {
       }
     };
     var bar = {
-      name: da.county,
-      fips_code: da.fips_code,
-      data: {
-
-      }
+      labels: ["Eligible Voter Turnout", "Registered Voter Turnout", "Pct Registered Voters"],
+      series: [
+        {
+          label: "Washington State",
+          values: [ba.total_turnout_pop_pct, ba.total_turnout_reg_pct, ba.total_reg_pop_pct]
+        },
+        {
+          label: da.county + " County",
+          values: [da.total_turnout_pop_pct, da.total_turnout_reg_pct, da.total_reg_pop_pct]
+        }
+      ]
     };
     var result = {
       pieData: pie,
@@ -98,12 +188,6 @@ router.get("/api/data/:code", function(req, res) {
   });
 });
 
-router.get("/api/bar/:code", function(req, res) {
-  db.Washington_state_data.findOne({
-
-  })
-});
-
 router.get("/api/leaf", function(req, res) {
   db.Washington_state_data.findAll({
     attributes: ["county", "total_turnout_pop_pct", "fips_code"],
@@ -113,7 +197,7 @@ router.get("/api/leaf", function(req, res) {
       }
     }
   }).then(function(data) {
-    console.log(data[0].dataValues);
+    // console.log(data[0].dataValues);
     var obj = []
     for (var i = 0; i < data.length; i++) {
       obj.push(data[i].dataValues);
@@ -123,4 +207,25 @@ router.get("/api/leaf", function(req, res) {
     console.log(err);
   });
 });
+
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+// module.exports = function(app) {
+//   // app.post("/api/login", passport.authenticate("local"), function(req, res) {
+//   //   res.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+//   // });
+
+//  //// Just trying to test passport... delete later
+
+
+
+// }
