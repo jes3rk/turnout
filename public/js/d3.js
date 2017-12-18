@@ -97,7 +97,8 @@ function barChart(data) {
   width = +svg.attr("width") - margin.left - margin.right,
   height = +svg.attr("height") - margin.top - margin.bottom;
 
-  var color = d3.scaleOrdinal(d3.schemeCategory10);
+  // var color = d3.scaleOrdinal(d3.schemeCategory20);
+  var color = d3.scaleOrdinal(["#006637", "#066873"])
 
   var x = d3.scaleBand().rangeRound([0, width])
     .padding(0.1),
