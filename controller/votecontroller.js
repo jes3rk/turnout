@@ -142,7 +142,7 @@ router.get("/api/data/:code", function(req, res) {
         ]
       }
     };
-    var bar = [
+    var total = [
       { cat: "Washington State", percentage: ba.total_turnout_pop_pct, label: "Turnout by Eligible Voters" },
       { cat: da.county + " County", percentage: da.total_turnout_pop_pct, label: "Turnout by Eligible Voters" },
       { cat: "Washington State", percentage: ba.total_turnout_reg_pct, label: "Turnout by Registered Voters" },
@@ -152,7 +152,9 @@ router.get("/api/data/:code", function(req, res) {
     ]
     var result = {
       pieData: pie,
-      barData: bar
+      barData: {
+        total: total
+      }
     };
     res.json(result);
   }).catch(function(err) {

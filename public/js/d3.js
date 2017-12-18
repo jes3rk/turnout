@@ -3,7 +3,7 @@ function getData(fips) {
     .done(function(data) {
       console.log(data);
       pieGenerator(data.pieData.data);
-      barChart(data.barData);
+      barChart(data.barData.total);
     });
 };
 
@@ -149,11 +149,16 @@ function barChart(data) {
     })
     .attr("width", x1.bandwidth())
     .attr("height", function(d) {
-      return height - y(d.percentage);
+      return 0;
     })
     .attr("fill", function(d) {
       return color(d.cat)
-    });
+    })
+    .append("title")
+      .text(function(d) { return d.cat + "\n" + (d.percentage * 100).toFixed(2) + "%"});
+
+  d3.selectAll("rect").transition()
+    .attr("height", function(d) { return height - y(d.percentage); });
 
   g.append("g")
     .attr("class", "axis")
@@ -170,4 +175,8 @@ function barChart(data) {
     .attr("fill", "#000")
     .attr("font-weight", "bold")
     .attr("text-anchor", "start");
+
+  function change(trigger) {
+
+  };
 };
