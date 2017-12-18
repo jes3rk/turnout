@@ -47,7 +47,7 @@ function pctToPCT(elementID) {
 
 $(document).ready(function() {
    $(".button-collapse").sideNav();
-   leafData();
+   // leafData();
 
    if ($('#county-name')) {
      // console.log($('#county-name').attr("data-fips"));

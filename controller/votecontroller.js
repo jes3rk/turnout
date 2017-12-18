@@ -105,7 +105,11 @@ router.get("/Washington/:code", function(req, res) {
     console.log(err);
     res.render("error");
   });
+
+
+
 });
+
 
 // data grabber for pie chart
 router.get("/api/data/:code", function(req, res) {
