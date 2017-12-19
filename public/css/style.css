@@ -2,6 +2,20 @@
     height: 500px;
    }
 
+.img-responsive{
+    width: 300px;
+    height: 300px;
+}
+
+.title{
+ color: green;
+}
+
+.nav-logo{
+    font-size: 40px;
+    padding-left: 10px;
+    color: #ee8d1d;
+}
 
   .info {
     padding: 6px 8px;
@@ -140,6 +154,7 @@ body {
 
 .team-member, .team-member .team-img {
     position: relative;
+    left: 35px;
 }
 .team-member {
     overflow: hidden;
@@ -151,7 +166,7 @@ body {
 .team-hover {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 35px;
     bottom: 0;
     right: 0;
     margin: 0;
@@ -160,6 +175,8 @@ body {
     opacity: 0;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
+    height: 400px;
+    width: 350px;
 }
 .team-member:hover .team-hover .desk {
     top: 35%;
@@ -217,15 +234,19 @@ body {
     display: inline-block;
     letter-spacing: 2px;
     width: 100%;
+    padding-left: 80px;
+    left: 34px;
 }
 .team-title h5 {
     margin-bottom: 0px;
     display: block;
     text-transform: uppercase;
+    left: 34px;
 }
 .team-title span {
     font-size: 12px;
     text-transform: uppercase;
     color: #a5a5a5;
     letter-spacing: 1px;
+    left: 34px;
 }
