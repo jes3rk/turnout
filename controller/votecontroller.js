@@ -160,7 +160,12 @@ router.get("/api/data/:code", function(req, res) {
     ];
     function scatter() {
       db.Washington_state_data.findAll({
-        attributes: ["county", "total_elig_pop", "total_turnout_pop_pct", "fips_code"]
+        attributes: ["county", "total_elig_pop", "total_turnout_pop_pct", "fips_code"],
+        where: {
+          fips_code: {
+            [Op.not]: "null"
+          }
+        }
       }).then(function(data) {
         var arr = [];
         for (var i = 0; i < data.length; i++) {
