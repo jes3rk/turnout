@@ -24,9 +24,12 @@ function mul100(num) {
 
 // home page router
 router.get("/", function(req, res) {
-    // some sequelize call
+  if (!req.user) {
+        res.render("login")
+    }else{
     var hbsObject;
     res.render("index");
+  }
 });
 
 
@@ -36,7 +39,7 @@ router.get("/login", function(req, res) {
 });
 
 router.get("/members", function(req, res) {
-    res.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    res.render("index");
 });
 
 router.get("/signup", function(req, res) {
@@ -45,11 +48,11 @@ router.get("/signup", function(req, res) {
 });
 
 router.post("/api/login", passport.authenticate("local"), function(req, res) {
-    res.json("/members");
+    res.json("/");
 });
 
 router.post("/api/signup", function(req, res) {
-    // console.log(req.body);
+    console.log(req.body);
     db.User.create({
         email: req.body.email,
         password: req.body.password
@@ -79,6 +82,7 @@ router.get("/api/user_data", function(req, res) {
 
 router.get("/Washington/:code", function(req, res) {
   // console.log(db);
+  
   var state = req.params.state;
   db.Washington_state_data.findOne({
     where: {
@@ -112,59 +116,59 @@ router.get("/Washington/:code", function(req, res) {
 
 
 // data grabber for pie chart
-router.get("/api/data/:code", function(req, res) {
-  db.Washington_state_data.findAll({
-    where: {
-      fips_code: {
-        [Op.or]: [req.params.code, "null"]
-      }
-    }
-  }).then(function(data) {
-    // console.log(data[1].dataValues);
-    var da = data[0].dataValues;
-    var ba = data[1].dataValues;
-    var pie = {
-      name: da.county,
-      fips_code: da.fips_code,
-      data: {
-        name: "Eligible Voters",
-        children: [
-          {
-            name: "Registered Voters",
-            children: [
-              {
-                name: "Voter",
-                children: [
-                  { name: "Men", size: da.male_ballots_cast },
-                  { name: "Women", size: da.female_ballots_cast }
-                ]
-              },
-              { name: "Non-voter", size: da.total_regis_pop-da.total_ballots_cast}
-            ]
-          },
-          { name: "Unregistered Voters", size: da.total_elig_pop-da.total_regis_pop }
-        ]
-      }
-    };
-    var total = [
-      { cat: "Washington State", percentage: ba.total_turnout_pop_pct, label: "Turnout by Eligible Voters" },
-      { cat: da.county + " County", percentage: da.total_turnout_pop_pct, label: "Turnout by Eligible Voters" },
-      { cat: "Washington State", percentage: ba.total_turnout_reg_pct, label: "Turnout by Registered Voters" },
-      { cat: da.county + " County", percentage: da.total_turnout_reg_pct, label: "Turnout by Registered Voters" },
-      { cat: "Washington State", percentage: ba.total_reg_pop_pct, label: "% Of Eligible Voters Registered" },
-      { cat: da.county + " County", percentage: da.total_reg_pop_pct, label: "% Of Eligible Voters Registered" }
-    ]
-    var result = {
-      pieData: pie,
-      barData: {
-        total: total
-      }
-    };
-    res.json(result);
-  }).catch(function(err) {
-    console.log(err);
-  });
-});
+// router.get("/api/data/:code", function(req, res) {
+//   db.Washington_state_data.findAll({
+//     where: {
+//       fips_code: {
+//         [Op.or]: [req.params.code, "null"]
+//       }
+//     }
+//   }).then(function(data) {
+//     // console.log(data[1].dataValues);
+//     var da = data[0].dataValues;
+//     var ba = data[1].dataValues;
+//     var pie = {
+//       name: da.county,
+//       fips_code: da.fips_code,
+//       data: {
+//         name: "Eligible Voters",
+//         children: [
+//           {
+//             name: "Registered Voters",
+//             children: [
+//               {
+//                 name: "Voter",
+//                 children: [
+//                   { name: "Men", size: da.male_ballots_cast },
+//                   { name: "Women", size: da.female_ballots_cast }
+//                 ]
+//               },
+//               { name: "Non-voter", size: da.total_regis_pop-da.total_ballots_cast}
+//             ]
+//           },
+//           { name: "Unregistered Voters", size: da.total_elig_pop-da.total_regis_pop }
+//         ]
+//       }
+//     };
+//     var total = [
+//       { cat: "Washington State", percentage: ba.total_turnout_pop_pct, label: "Turnout by Eligible Voters" },
+//       { cat: da.county + " County", percentage: da.total_turnout_pop_pct, label: "Turnout by Eligible Voters" },
+//       { cat: "Washington State", percentage: ba.total_turnout_reg_pct, label: "Turnout by Registered Voters" },
+//       { cat: da.county + " County", percentage: da.total_turnout_reg_pct, label: "Turnout by Registered Voters" },
+//       { cat: "Washington State", percentage: ba.total_reg_pop_pct, label: "% Of Eligible Voters Registered" },
+//       { cat: da.county + " County", percentage: da.total_reg_pop_pct, label: "% Of Eligible Voters Registered" }
+//     ]
+//     var result = {
+//       pieData: pie,
+//       barData: {
+//         total: total
+//       }
+//     };
+//     res.json(result);
+//   }).catch(function(err) {
+//     console.log(err);
+//   });
+// });
 
 router.get("/api/leaf", function(req, res) {
   db.Washington_state_data.findAll({
