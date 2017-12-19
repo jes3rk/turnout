@@ -248,14 +248,16 @@ var legend = L.control({position: 'bottomleft'});
 legend.onAdd = function (map) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 60, 70],
-        labels = ['red', 'black', 'green'];
+        grades = ['0 - 59%', '60 - 69%', '70 - 100%'],
+        labels = ['#b80000', '#ebeb00', '#217e1b'];
 
     // loop through our density intervals and generate a label with a colored square for each interval
+    div.innerHTML += `
+                    <b>Legend</b></br>`
     for (var i = 0; i < grades.length; i++) {
         div.innerHTML +=
-            '<i style="background:' + labels[i] + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            '<i style="background:' + labels[i] + '"></i> ' +   
+            grades[i] + '<br>';
     }
 
     return div;
