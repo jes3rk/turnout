@@ -160,7 +160,7 @@ router.get("/api/data/:code", function(req, res) {
     ];
     function scatter() {
       db.Washington_state_data.findAll({
-        attributes: ["county", "total_elig_pop", "total_turnout_pop_pct"]
+        attributes: ["county", "total_elig_pop", "total_turnout_pop_pct", "fips_code"]
       }).then(function(data) {
         var arr = [];
         for (var i = 0; i < data.length; i++) {
@@ -168,7 +168,8 @@ router.get("/api/data/:code", function(req, res) {
           var obj = {
             county: val.county,
             pop: val.total_elig_pop,
-            turnout: val.total_turnout_pop_pct
+            turnout: val.total_turnout_pop_pct,
+            code: val.fips_code
           };
           result.scatterData.push(obj);
         };

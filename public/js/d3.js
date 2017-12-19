@@ -178,7 +178,6 @@ function barChart(data) {
     .attr("text-anchor", "start");
 };
 
-
 function scatterPlot(data) {
   var margin = {top: 20, right: 20, bottom: 30, left: 50},
     width = 960 - margin.left - margin.right,
@@ -202,7 +201,8 @@ function scatterPlot(data) {
      .enter().append("circle")
        .attr("r", 5)
        .attr("cx", function(d) { return x(d.pop); })
-       .attr("cy", function(d) { return y(d.turnout); });
+       .attr("cy", function(d) { return y(d.turnout); })
+       ;
 
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")
