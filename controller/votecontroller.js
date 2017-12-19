@@ -24,9 +24,12 @@ function mul100(num) {
 
 // home page router
 router.get("/", function(req, res) {
-    // some sequelize call
+  if (!req.user) {
+        res.render("login")
+    }else{
     var hbsObject;
     res.render("index");
+  }
 });
 
 
@@ -36,7 +39,7 @@ router.get("/login", function(req, res) {
 });
 
 router.get("/members", function(req, res) {
-    res.redirect("/Washington/001");
+    res.render("index");
 });
 
 router.get("/signup", function(req, res) {
@@ -45,7 +48,7 @@ router.get("/signup", function(req, res) {
 });
 
 router.post("/api/login", passport.authenticate("local"), function(req, res) {
-    res.json("/members");
+    res.json("/");
 });
 
 router.post("/api/signup", function(req, res) {
@@ -79,9 +82,7 @@ router.get("/api/user_data", function(req, res) {
 
 router.get("/Washington/:code", function(req, res) {
   // console.log(db);
-    if (!req.user) {
-        res.render("login")
-    }else{
+  
   var state = req.params.state;
   db.Washington_state_data.findOne({
     where: {
@@ -108,7 +109,7 @@ router.get("/Washington/:code", function(req, res) {
     console.log(err);
     res.render("error");
   });
-}
+
 
 
 });
