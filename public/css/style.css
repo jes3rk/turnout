@@ -5,7 +5,7 @@
 .img-responsive{
     width: 300px;
     height: 300px;
-}  
+}
 
 .title{
  color: green;
@@ -57,7 +57,7 @@ body{
 	background-color: #b9bbbe;
 	border-style: solid;
 	box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-} 
+}
 
 hr{
 	background-color:red;
@@ -67,20 +67,25 @@ hr{
 	background-color: #b9bbbe;
 	border-style: solid;
 	box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-} 
+}
 
 #resultsWhite{
-	background-color: white; 
+	background-color: white;
 	box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
 }
 
 #results{
-	background-color: #b9bbbe; 
+	background-color: #b9bbbe;
 	box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
 }
 
 #resultsCounty{
-	background-color: #b9bbbe; 
+	background-color: #b9bbbe;
+	box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+
+#scatter-plot{
+	background-color: #b9bbbe;
 	box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
 }
 

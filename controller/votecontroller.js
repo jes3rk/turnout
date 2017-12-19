@@ -82,7 +82,7 @@ router.get("/api/user_data", function(req, res) {
 
 router.get("/Washington/:code", function(req, res) {
   // console.log(db);
-  
+
   var state = req.params.state;
   db.Washington_state_data.findOne({
     where: {
@@ -116,59 +116,81 @@ router.get("/Washington/:code", function(req, res) {
 
 
 // data grabber for pie chart
-// router.get("/api/data/:code", function(req, res) {
-//   db.Washington_state_data.findAll({
-//     where: {
-//       fips_code: {
-//         [Op.or]: [req.params.code, "null"]
-//       }
-//     }
-//   }).then(function(data) {
-//     // console.log(data[1].dataValues);
-//     var da = data[0].dataValues;
-//     var ba = data[1].dataValues;
-//     var pie = {
-//       name: da.county,
-//       fips_code: da.fips_code,
-//       data: {
-//         name: "Eligible Voters",
-//         children: [
-//           {
-//             name: "Registered Voters",
-//             children: [
-//               {
-//                 name: "Voter",
-//                 children: [
-//                   { name: "Men", size: da.male_ballots_cast },
-//                   { name: "Women", size: da.female_ballots_cast }
-//                 ]
-//               },
-//               { name: "Non-voter", size: da.total_regis_pop-da.total_ballots_cast}
-//             ]
-//           },
-//           { name: "Unregistered Voters", size: da.total_elig_pop-da.total_regis_pop }
-//         ]
-//       }
-//     };
-//     var total = [
-//       { cat: "Washington State", percentage: ba.total_turnout_pop_pct, label: "Turnout by Eligible Voters" },
-//       { cat: da.county + " County", percentage: da.total_turnout_pop_pct, label: "Turnout by Eligible Voters" },
-//       { cat: "Washington State", percentage: ba.total_turnout_reg_pct, label: "Turnout by Registered Voters" },
-//       { cat: da.county + " County", percentage: da.total_turnout_reg_pct, label: "Turnout by Registered Voters" },
-//       { cat: "Washington State", percentage: ba.total_reg_pop_pct, label: "% Of Eligible Voters Registered" },
-//       { cat: da.county + " County", percentage: da.total_reg_pop_pct, label: "% Of Eligible Voters Registered" }
-//     ]
-//     var result = {
-//       pieData: pie,
-//       barData: {
-//         total: total
-//       }
-//     };
-//     res.json(result);
-//   }).catch(function(err) {
-//     console.log(err);
-//   });
-// });
+router.get("/api/data/:code", function(req, res) {
+  db.Washington_state_data.findAll({
+    where: {
+      fips_code: {
+        [Op.or]: [req.params.code, "null"]
+      }
+    }
+  }).then(function(data) {
+    // console.log(data[1].dataValues);
+    var da = data[0].dataValues;
+    var ba = data[1].dataValues;
+    var pie = {
+      name: da.county,
+      fips_code: da.fips_code,
+      data: {
+        name: "Eligible Voters",
+        children: [
+          {
+            name: "Registered Voters",
+            children: [
+              {
+                name: "Voter",
+                children: [
+                  { name: "Men", size: da.male_ballots_cast },
+                  { name: "Women", size: da.female_ballots_cast }
+                ]
+              },
+              { name: "Non-voter", size: da.total_regis_pop-da.total_ballots_cast}
+            ]
+          },
+          { name: "Unregistered Voters", size: da.total_elig_pop-da.total_regis_pop }
+        ]
+      }
+    };
+    var total = [
+      { cat: "Washington State", percentage: ba.total_turnout_pop_pct, label: "Turnout by Eligible Voters" },
+      { cat: da.county + " County", percentage: da.total_turnout_pop_pct, label: "Turnout by Eligible Voters" },
+      { cat: "Washington State", percentage: ba.total_turnout_reg_pct, label: "Turnout by Registered Voters" },
+      { cat: da.county + " County", percentage: da.total_turnout_reg_pct, label: "Turnout by Registered Voters" },
+      { cat: "Washington State", percentage: ba.total_reg_pop_pct, label: "% Of Eligible Voters Registered" },
+      { cat: da.county + " County", percentage: da.total_reg_pop_pct, label: "% Of Eligible Voters Registered" }
+    ];
+    function scatter() {
+      db.Washington_state_data.findAll({
+        attributes: ["county", "total_elig_pop", "total_turnout_pop_pct"]
+      }).then(function(data) {
+        var arr = [];
+        for (var i = 0; i < data.length; i++) {
+          var val = data[i].dataValues;
+          var obj = {
+            county: val.county,
+            pop: val.total_elig_pop,
+            turnout: val.total_turnout_pop_pct
+          };
+          result.scatterData.push(obj);
+        };
+        // res.json for the api call... not for the scatter function
+        res.json(result);
+      }).catch(function(err) {
+        console.log(err);
+      });
+    };
+
+    scatter();
+    var result = {
+      pieData: pie,
+      barData: {
+        total: total
+      },
+      scatterData: []
+    };
+  }).catch(function(err) {
+    console.log(err);
+  });
+});
 
 router.get("/api/leaf", function(req, res) {
   db.Washington_state_data.findAll({
