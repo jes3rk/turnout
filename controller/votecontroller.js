@@ -153,14 +153,36 @@ router.get("/api/data/:code", function(req, res) {
       { cat: da.county + " County", percentage: da.total_turnout_reg_pct, label: "Turnout by Registered Voters" },
       { cat: "Washington State", percentage: ba.total_reg_pop_pct, label: "% Of Eligible Voters Registered" },
       { cat: da.county + " County", percentage: da.total_reg_pop_pct, label: "% Of Eligible Voters Registered" }
-    ]
+    ];
+    function scatter() {
+      db.Washington_state_data.findAll({
+        attributes: ["county", "total_elig_pop", "total_turnout_pop_pct"]
+      }).then(function(data) {
+        var arr = [];
+        for (var i = 0; i < data.length; i++) {
+          var val = data[i].dataValues;
+          var obj = {
+            county: val.county,
+            pop: val.total_elig_pop,
+            turnout: val.total_turnout_pop_pct
+          };
+          result.scatterData.push(obj);
+        };
+        // res.json for the api call... not for the scatter function
+        res.json(result);
+      }).catch(function(err) {
+        console.log(err);
+      });
+    };
+
+    scatter();
     var result = {
       pieData: pie,
       barData: {
         total: total
-      }
+      },
+      scatterData: []
     };
-    res.json(result);
   }).catch(function(err) {
     console.log(err);
   });
