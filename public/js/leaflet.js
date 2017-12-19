@@ -1,5 +1,3 @@
-alert('connected bitch');
-
 console.log(this);
 
 
@@ -22,7 +20,7 @@ var cdata = {
     features: [],
 };
 
-// var showAll=function(x){
+var showAll=function(style){
 
 $.ajax({
 dataType: "json",
@@ -49,15 +47,31 @@ success: function(data) {
 
 
 });
-// }
+}
 
+showAll(style);
 
-
-function style2(feature) {
+function style(feature) {
     // console.log(feature)
     
     return {
-        fillColor: getColor(feature.properties.COUNTY),
+        // fillColor: getColor(feature.properties.COUNTY),
+        // fill: false,
+        fillColor: 'white',
+        fillOpacity: 0.5,
+        weight: 1,
+        // opacity: 1,
+        color: 'black',
+        // dashArray: '3',
+    };
+}
+
+
+function style2(feature, button) {
+    // console.log(feature)
+    
+    return {
+        fillColor: getColor(feature.properties.COUNTY, button),
 // fillColor: 'red',
         fillOpacity: 0.5,
         weight: 1,
@@ -67,21 +81,23 @@ function style2(feature) {
     };
 }
 
-function loadData(e) {
-    var layer = e.target;
-    console.log(e)
-    // console.log(layer.feature);
-//sets the color and settings of the outline when hovering
-    layer.setStyle(style(e));
+//////function that gets the color of the states///
+function getColor(d, button) {
+    console.log(vdata)
+    for (var i=0; i<vdata.length;i++){
+    if(d === vdata[i].fips_code){
 
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
+    if(vdata[i].total_turnout_pop_pct < 0.49){
+        return '#b80000';
+    }else if(vdata[i].total_turnout_pop_pct < 0.59){
+        return '#ebeb00';
+    }else{
+        return '#217e1b';
+        }   
+        }      
     }
-    info.update(layer.feature.properties, vdata);
-    info._div.innerHTML += '<button>Click Here for more info</button>';
-    
-    
 }
+
 // loadData(cdata);
 
 
@@ -101,7 +117,6 @@ if(true){
 ///////////voter data test ///////////////////////////
 // var voterData;
 
-var color;
 var leafData = function () {
     $.get("/api/leaf").done(function(data) {
       console.log(data);
@@ -139,46 +154,8 @@ var vdata = [];
 console.log(vdata)
 
 
-///////////////////////voter data test/////////////////////
 
 
-/////////////////////////////////////////////////////////interactive choloropleth map test below////
-
-
-//////function that gets the color of the states///
-function getColor(d, button) {
-    console.log(vdata)
-    for (var i=0; i<vdata.length;i++){
-    if(d === vdata[i].fips_code){
-
-    if(vdata[i].total_turnout_pop_pct < 0.49){
-        return '#b80000';
-    }else if(vdata[i].total_turnout_pop_pct < 0.59){
-        return '#ebeb00';
-    }else{
-        return '#217e1b';
-        }   
-        }      
-    }
-}
-
-
-    
-
-
-function style(feature) {
-    // console.log(feature)
-    
-    return {
-        // fillColor: getColor(feature.properties.COUNTY),
-        fillColor: 'white',
-        fillOpacity: 0.5,
-        weight: 1,
-        opacity: 1,
-        color: 'black',
-        // dashArray: '3',
-    };
-}
 
 // L.geoJson(cdata, {style: style}).addTo(map);
 
@@ -212,15 +189,18 @@ function userSelect(e){
     var layer = e.target;
     zoomToFeature(e);
     console.log(layer.feature.properties.COUNTY);
-    info._div.innerHTML += '<button id="infoPage">Click Here for more info</button>';
+    var userinput = layer.feature.properties.COUNTY
+    console.log(info._div)
     // info._div += L.DomUtil.create('button', 'infoPage');
     // $('#infoPage').attr('onclick', getData());  
+    info.update(layer.feature.properties, vdata);
+    info._div.innerHTML += '<button id="infoPage">Click Here for more info</button>';
 }
 
 /////county click
 
 function resetHighlight(e) {
-    geojson.resetStyle(e.target);
+    // geojson.resetStyle(e.target);
     // info.update();
     
 }
@@ -250,8 +230,17 @@ info.onAdd = function (map) {
 // method that we will use to update the control based on feature properties passed
 info.update = function (county, voter) {
     console.log(county);
-    this._div.innerHTML = '<h4>State Voter Turnout</h4>'
-     '<p>:Hover over a state to see turnout</p>'
+    this._div.innerHTML = `
+                        <h4>State Voter Turnout</h4>
+                        <p>Hover over a state to see turnout</p>
+                        <b>Search by FIPS: </b>
+                        <input type='text' id='fipsSearch' size='1'></br>
+                        <button id="fipsBtn">Submit</button>
+                        </br>
+                        `
+                        // <div><button id='infoPage'>Click Here for More Info</button>
+                        
+
                     
     if(voter){
         console.log(voter)
@@ -259,10 +248,18 @@ info.update = function (county, voter) {
             if (voter[i].fips_code === county.COUNTY){
                 
                 this._div.innerHTML +=  (county ?
-                '<b>' + county.NAME + '</b><br />' + Math.round(voter[i].total_turnout_pop_pct*100) + '%'
-                //  : 'Hover over a state to see turnout'
-                :''
+                `<b>${county.NAME}
+                </br>FIPS: ${voter[i].fips_code}</b> </br>
+                
+                <ul>
+                    <li>Voter Turnout: ${Math.round(voter[i].total_turnout_pop_pct*100)+'%'}</li>                
+                    <li>Total Eligible: ${voter[i].total_elig_pop}</li>
+                    <li>Total Ballots Cast: ${voter[i].total_ballots_cast}</li>
+                </ul>
+               `
+                : 'Hover over a state to see turnout'
                 );
+                
          }
      }
     }
