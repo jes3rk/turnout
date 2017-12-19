@@ -17,7 +17,7 @@ var cdata = {
 $.ajax({
 dataType: "json",
 type: 'GET',
-url: "./data/counties.geojson",
+url: "../data/counties.geojson",
 success: function(data) {
     $(data.features).each(function(key, data) {
         if(data.properties.STATE === '53'){
