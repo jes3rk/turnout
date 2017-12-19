@@ -39,22 +39,10 @@ $(document).ready(function(){
 
 
     $('body').on('click', '#infoPage', function(event){
-        
-
-        // $.ajax("/washington/" + userCode, {
-        //     type: "GET"
-        //   }).then(
-        //     function() {
-        //       console.log(userCode);
               window.location.href = '/washington/'+userCode;
             });
-        //   );
-        // });
     
-    $('body').on('click', '#fipsBtn', function(event){
-
-        
-        
+    $('body').on('click', '#fipsBtn', function(event){  
         var userInputData = $('#fipsSearch').val();
         window.location.href = '/washington/'+userInputData;
         userSelect(map);
