@@ -163,6 +163,7 @@ function highlightFeature(e) {
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();
     }
+    userCode = layer.feature.properties.COUNTY;
     info.update(layer.feature.properties, vdata);
 }
 
@@ -180,7 +181,6 @@ function userSelect(e){
     // info._div += L.DomUtil.create('button', 'infoPage');
     // $('#infoPage').attr('onclick', getData());  
     info.update(layer.feature.properties, vdata);
-    info._div.innerHTML += '<button id="infoPage">Click Here for more info</button>';
 }
 
 function resetHighlight(e) {
@@ -217,7 +217,7 @@ info.update = function (county, voter) {
                         <p>Hover over a state to see turnout</p>
                         <b>Search by FIPS: </b>
                         <input type='text' id='fipsSearch' size='1'></br>
-                        <button id="fipsBtn">Submit</button>
+                        <button id="fipsBtn">Click for More Info</button>
                         </br>
                         `         
     if(voter){
