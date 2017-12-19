@@ -1,58 +1,68 @@
 var testMonkey;
 var counties;
+var choicep
 
 $(document).ready(function(){
     $('#lowBtn').on('click', function(event){
         console.log('you clicked low')
         console.log(this.getAttribute('data-name'));
-        if(counties){
-            map.removeLayer(counties)
-            }
-            counties = new L.geoJson();
-            // counties.addTo(map);
-            counties = L.geoJson(cdata, {
-                style: style2,
-                onEachFeature: onEachFeature
-            }).addTo(map);     
+        choice = this.getAttribute('data-name');
+        console.log(choice);
+        
+        voterLayer(); 
     });
-});
 
-$(document).ready(function(){
     $('#medBtn').on('click', function(event){
         console.log('you clicked low')
-    
-        if(counties){
-            map.removeLayer(counties)
-            }
-            counties = new L.geoJson();
-            // counties.addTo(map);
-            counties = L.geoJson(cdata, {
-                style: style2,
-                onEachFeature: onEachFeature
-            }).addTo(map);     
+        choice = this.getAttribute('data-name');
+        
+    voterLayer();  
     });
-});
 
-$(document).ready(function(){
+
     $('#highBtn').on('click', function(event){
-        console.log('you clicked low')
-        if(counties){
-            map.removeLayer(counties)
-            }
-            counties = new L.geoJson();
-            // counties.addTo(map);
-            counties = L.geoJson(cdata, {
-                style: style2,
-                onEachFeature: onEachFeature
-            }).addTo(map);     
+        console.log('you clicked low');
+        choice = this.getAttribute('data-name');
+        
+        voterLayer();    
 
     });
-});
 
-$(document).ready(function(){
+
     $('#showAll').on('click', function(event){
         console.log('you clicked low');
-        if(counties){
+        choice = this.getAttribute('data-name');
+        
+        voterLayer();
+     
+});
+
+
+    $('body').on('click', '#infoPage', function(event){
+        
+
+        $.ajax("/api/data/" + userCode, {
+            type: "GET"
+          }).then(
+            function() {
+              
+              location.assign('/');
+            }
+          );
+        });
+    
+    $('body').on('click', '#fipsBtn', function(event){
+        
+        var userInputData = $('#fipsSearch').val();
+
+        userSelect(map);
+
+        console.log(userInputData)
+    });
+});
+
+function voterLayer (choice){
+    if(counties){
         map.removeLayer(counties)
         // map.removeLayer(geojson);
         }
@@ -61,25 +71,6 @@ $(document).ready(function(){
         counties = L.geoJson(cdata, {
             style: style2,
             onEachFeature: onEachFeature
-        }).addTo(map);       
-    });
-});
-
-$(document).ready(function(){
-
-    $('body').on('click', '#infoPage', function(event){
-        console.log('you clicked');
-        alert('')
-    });
-    
-    $('body').on('click', '#fipsBtn', function(event){
-        
-        var userInputData = $('#fipsSearch').val();
-        
-        userSelect(map);
-
-        console.log(userInputData)
-    });
-    
-})
-// })
+        }).addTo(map);  
+        // btnStyle(counties, choice)
+}

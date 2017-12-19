@@ -67,11 +67,12 @@ function style(feature) {
 }
 
 
-function style2(feature, button) {
-    // console.log(feature)
+function style2(feature) {
+
+    if(choice){
     
     return {
-        fillColor: getColor(feature.properties.COUNTY, button),
+        fillColor: getColor(feature.properties.COUNTY, choice),
 // fillColor: 'red',
         fillOpacity: 0.5,
         weight: 1,
@@ -80,24 +81,66 @@ function style2(feature, button) {
         // dashArray: '3',
     };
 }
+else{
+    return;
+}
+}
 
 //////function that gets the color of the states///
 function getColor(d, button) {
+    
     console.log(vdata)
-    for (var i=0; i<vdata.length;i++){
-    if(d === vdata[i].fips_code){
+    switch(button){
+    // if(button === 'showAll'){
+        case 'showAll':
+        for (var i=0; i<vdata.length;i++){
+            if(d === vdata[i].fips_code){
+                if(vdata[i].total_turnout_pop_pct < 0.49){
+                    return '#b80000';
+                }else if(vdata[i].total_turnout_pop_pct < 0.59){
+                        return '#ebeb00';
+                }else{
+                        return '#217e1b';
+                }   
+                }      
+            }
 
-    if(vdata[i].total_turnout_pop_pct < 0.49){
-        return '#b80000';
-    }else if(vdata[i].total_turnout_pop_pct < 0.59){
-        return '#ebeb00';
-    }else{
-        return '#217e1b';
-        }   
-        }      
+            break;
+        case 'low':
+        for (var i=0; i<vdata.length;i++){
+            if(d === vdata[i].fips_code){
+                if(vdata[i].total_turnout_pop_pct < 0.49){
+                    return '#b80000';
+                }else{
+                return 'black';
+                }
+        
+            }
+        }
+        case 'med':
+        for (var i=0; i<vdata.length;i++){
+            if(d === vdata[i].fips_code){
+                if(vdata[i].total_turnout_pop_pct < 0.69 && vdata[i].total_turnout_pop_pct > 0.49){
+                    return '#ebeb00';
+                }else{
+                return 'black';
+                }
+        
+            }
+        }
+        case 'high':
+        for (var i=0; i<vdata.length;i++){
+            if(d === vdata[i].fips_code){
+                if(vdata[i].total_turnout_pop_pct < 0.99 && vdata[i].total_turnout_pop_pct > 0.69){
+                    return '#b80000';
+                }else{
+                return 'black';
+                }
+        
+            }
+        }
     }
 }
-
 // loadData(cdata);
 
 
@@ -184,13 +227,17 @@ function highlightFeature(e) {
     
 }
 
+var userCode;
+
+
 ///////what does joe need returned////
 function userSelect(e){
     var layer = e.target;
     zoomToFeature(e);
     console.log(layer.feature.properties.COUNTY);
-    var userinput = layer.feature.properties.COUNTY
-    console.log(info._div)
+
+    console.log(info._div);
+    userCode = layer.feature.properties.COUNTY;
     // info._div += L.DomUtil.create('button', 'infoPage');
     // $('#infoPage').attr('onclick', getData());  
     info.update(layer.feature.properties, vdata);
