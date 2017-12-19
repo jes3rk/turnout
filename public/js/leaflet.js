@@ -21,38 +21,25 @@ url: "./data/counties.geojson",
 success: function(data) {
     $(data.features).each(function(key, data) {
         if(data.properties.STATE === '53'){
-        // counties.addData(data);
-        // console.log(data);
         cdata.features.push(data);
-        // countyData.addData(data);
     }
 });
 }
 }).then(function(){
-    // L.geoJson(cdata).addTo(map) 
     info.addTo(map);
-    // L.geoJson(cdata, {style: style}).addTo(map);
     geojson = L.geoJson(cdata, {
         style: style,
         onEachFeature: onEachFeature
     }).addTo(map);
-
-
 });
 
 
 function style(feature) {
-    // console.log(feature)
-    
     return {
-        // fillColor: getColor(feature.properties.COUNTY, 'showAll'),
-        // fill: false,
         fillColor: 'white',
         fillOpacity: 0.5,
         weight: 1,
-        // opacity: 1,
         color: 'black',
-        // dashArray: '3',
     };
 }
 
@@ -63,12 +50,10 @@ function style2(feature) {
     
     return {
         fillColor: getColor(feature.properties.COUNTY, choice),
-// fillColor: 'red',
         fillOpacity: 0.5,
         weight: 1,
         opacity: 1,
         color: 'black',
-        // dashArray: '3',
     };
 }
 else{
@@ -78,10 +63,7 @@ else{
 
 //////function that gets the color of the states///
 function getColor(d, button) {
-    
-    // console.log(vdata)
     switch(button){
-    // if(button === 'showAll'){
         case 'showAll':
         for (var i=0; i<vdata.length;i++){
             if(d === vdata[i].fips_code){
@@ -92,9 +74,8 @@ function getColor(d, button) {
                 }else{
                         return '#217e1b';
                 }   
-                }      
-            }
-
+            }      
+        }
             break;
         case 'low':
         for (var i=0; i<vdata.length;i++){
@@ -150,49 +131,27 @@ function getColor(d, button) {
 ///////////voter data test ///////////////////////////
 
 
+var vdata = [];
 var leafData = function () {
     $.get("/api/leaf").done(function(data) {
     //   console.log(data);
        var keys = Object.keys(data);
-    //  keys.forEach(function(){
-    //      console.log(data[keys[0]].fips_code)
-    //     })
-
 
     return data;
-    
-    
-    
-    
-}).then(function(data){
-    // voterData = data;
-    // console.log(data);
 
+}).then(function(data){
     for(var i = 0; i < data.length; i++){
         // console.log(data[i]);
         vdata.push(data[i])
     }
-
-    // geojson = L.geoJson(data, {
-    //     style: style,
-    //     onEachFeature: onEachFeature
-    // }).addTo(map);
-    
-    
 })
 };
-
-var vdata = [];
-  
-
 
 //////////////////hover events
 var geoJson;
 
 function highlightFeature(e) {
     var layer = e.target;
-    // console.log(e)
-    // console.log(layer.feature);
 //sets the color and settings of the outline when hovering
     layer.setStyle({
         weight: 2,
@@ -205,7 +164,6 @@ function highlightFeature(e) {
         layer.bringToFront();
     }
     info.update(layer.feature.properties, vdata);
-    // info._div.innerHTML += '<button id="infoPage">Click Here for more info</button>';    
 }
 
 
@@ -225,12 +183,9 @@ function userSelect(e){
     info._div.innerHTML += '<button id="infoPage">Click Here for more info</button>';
 }
 
-/////county click
-
 function resetHighlight(e) {
     geojson.resetStyle(e.target);
     info.update();
-    
 }
 
 function zoomToFeature(e) {
@@ -239,7 +194,6 @@ function zoomToFeature(e) {
 }
 
 function onEachFeature(feature, layer) {
-   
     layer.on({
         mouseover: highlightFeature,
         // mouseout: resetHighlight,
@@ -265,11 +219,7 @@ info.update = function (county, voter) {
                         <input type='text' id='fipsSearch' size='1'></br>
                         <button id="fipsBtn">Submit</button>
                         </br>
-                        `
-                        // <div><button id='infoPage'>Click Here for More Info</button>
-                        
-
-                    
+                        `         
     if(voter){
         // console.log(voter)
         for(var i=0; i<voter.length; i++){
@@ -288,25 +238,23 @@ info.update = function (county, voter) {
                 : 'Hover over a state to see turnout'
                 );
                 
+            }
          }
-     }
     }
-    // var keys = Object.keys(voter);
-   
-    }
+}
 
-    var legend = L.control({position: 'bottomleft'});
+var legend = L.control({position: 'bottomleft'});
 
 legend.onAdd = function (map) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
-        labels = [];
+        grades = [0, 60, 70],
+        labels = ['red', 'black', 'green'];
 
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
         div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            '<i style="background:' + labels[i] + '"></i> ' +
             grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
     }
 
