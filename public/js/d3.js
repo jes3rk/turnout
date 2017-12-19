@@ -214,17 +214,17 @@ function scatterPlot(data) {
 
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x).ticks(6, 0));
 
   svg.append("text")
     .attr("transform",
           "translate(" + (width/2) + " ," +
                          (height + margin.top + 20) + ")")
     .style("text-anchor", "middle")
-    .text("Population (Log)");
+    .text("Population of Eligible Voters (Log)");
 
   svg.append("g")
-    .call(d3.axisLeft(y));
+    .call(d3.axisLeft(y).ticks(null, "%"));
 
   svg.append("text")
       .attr("transform", "rotate(-90)")

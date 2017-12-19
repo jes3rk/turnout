@@ -37,24 +37,12 @@ function pctToPCT(elementID) {
   });
 };
 
-// function leafData() {
-//   $.get("/api/leaf").done(function(data) {
-//     console.log(data);
-//     //  obj.push(data);
-//      return data
-//   });
-// };
-
 $(document).ready(function() {
    $(".button-collapse").sideNav();
    leafData();
 
    if ($('#county-name')) {
-     // console.log($('#county-name').attr("data-fips"));
      getData($('#county-name').attr("data-fips"));
-     // $('#turnout').text(function() {
-     //   return ($(this).attr("data-nonPct") * 100).toFixed(2) + "%";
-     // });
      pctToPCT('#turnout');
      pctToPCT('#pie-legend-total-turn')
    };
