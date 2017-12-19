@@ -1,6 +1,6 @@
 var testMonkey;
 var counties;
-var choicep
+var choice;
 
 $(document).ready(function(){
     $('#lowBtn').on('click', function(event){
@@ -41,22 +41,23 @@ $(document).ready(function(){
     $('body').on('click', '#infoPage', function(event){
         
 
-        $.ajax("/api/data/" + userCode, {
-            type: "GET"
-          }).then(
-            function() {
-              
-              location.assign('/');
-            }
-          );
-        });
+        // $.ajax("/washington/" + userCode, {
+        //     type: "GET"
+        //   }).then(
+        //     function() {
+        //       console.log(userCode);
+              window.location.href = '/washington/'+userCode;
+            });
+        //   );
+        // });
     
     $('body').on('click', '#fipsBtn', function(event){
+
+        
         
         var userInputData = $('#fipsSearch').val();
-
+        window.location.href = '/washington/'+userInputData;
         userSelect(map);
-
         console.log(userInputData)
     });
 });
